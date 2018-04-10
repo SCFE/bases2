@@ -1,7 +1,7 @@
 --Para que utilice la base de datos prueba
 
 USE prueba
---Creación del procedimiento almacenado
+--Creaciï¿½n del procedimiento almacenado
 GO 
 CREATE PROCEDURE busqueda_usuarios
 --Parametros que utilizara el procedimiento almacenado
@@ -11,8 +11,8 @@ CREATE PROCEDURE busqueda_usuarios
 AS
 --Query que realizara el procedimiento almacenado
 	SET NOCOUNT ON;
-	SELECT Nombre, Apellido, Correo, Contrasenia
-	FROM USUARIO WHERE Nombre like @nombre AND Apellido = @apellido
+	SELECT Nombre, Apellido, Correo, convert(varchar(MAX), DECRYPTBYPASSPHRASE('password', Contrasenia))
+	FROM USUARIO WHERE Nombre = @nombre AND Apellido = @apellido
 
 GO
 	
