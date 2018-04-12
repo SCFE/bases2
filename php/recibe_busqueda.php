@@ -1,7 +1,7 @@
 <?php
 //include('conexion.php');
-$nombre = $_POST['nombre'];
-$apellido = $_POST['apellido'];
+//$nombre = $_POST['nombre'];
+//$apellido = $_POST['apellido'];
 $correo = $_POST['correo'];
 $contraseña = $_POST['contraseña'];
 
@@ -19,16 +19,37 @@ if($connection)
 
 
  // echo 'Conexion exitosa';
-    $queryInsert= "INSERT INTO USUARIO(Nombre, Apellido, Correo, Contrasenia )
-    VALUES ('$nombre', '$apellido','$correo','$contraseña')";
+    /*$queryInsert= "INSERT INTO USUARIO(Nombre, Apellido, Correo, Contrasenia )
+    VALUES ('$nombre', '$apellido','$correo','$contraseña')";*/
+    $querySelect = "SELECT * FROM USUARIO WHERE Correo = '$correo'";
 
-$insertar = sqlsrv_prepare($connection, $queryInsert);
+//$buscar = sqlsrv_prepare($connection, $querySelect);
+$buscar = sqlsrv_query($connection,$querySelect);
+
+if($buscar === false)
+{
+
+    die(print_r(sqlsrv_errors(), true));
+}
+
+while( $row = sqlsrv_fetch_array($buscar, SQLSRV_FETCH_NUMERIC))
+{
+    
+    $i = sizeof($row);
+    for($j=0; $j<$i; $j++ )
+    {
+        echo $row[$j].'</br>';
+    }
+    
+}
+sqlsrv_free_stmt($buscar);
+
 
 //verificar
-
-if(sqlsrv_execute($insertar))
+/*
+if(sqlsrv_execute($buscar))
 {
-echo "Se realizo la insercion";
+echo "Se realizo la busqueda";
 }
 else
 {
@@ -42,8 +63,8 @@ else
     echo 'Oh oh algo asi lado mal';
     die(print_r(sqlsrv_errors(), true));
 
-}
-
+}*/
+//De aca para abajo no se a usado
 /*if(!empty($_POST))
 {
     echo "Estos son los datos del formulario: ".$nombre." ".$apellido." ".$correo." ".$contraseña;
@@ -65,6 +86,8 @@ else
     }
 
 }*/
-
+}
 
 ?>
+
+
